@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/var/www/html  # Confirm this points to where your HTML/PHP files are stored
+      - ./php/src:/var/www/php
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Ensure this is correct
+      - ./nginx/conf.d:/etc/nginx/conf.d  # Ensure this is correct
+    links:
+      - php
+    networks:
+      - frontend
+      - backend
+
+  php:
+    build: ./php
+    volumes:
+      - ./php/src:/var/www/php
+      - ./html:/var/www/html
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: LibraryDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  db_data:
