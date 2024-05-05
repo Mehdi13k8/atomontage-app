@@ -1,8 +1,21 @@
 // crud request
 // GET, POST, PUT, DELETE
 
+function ajaxSetup() {
+  $.ajaxSetup({
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+  });
+}
+
 // ready
 $(document).ready(function () {
+  ajaxSetup();
+  if (!localStorage.getItem("token")) {
+    window.location.href = "login.html"; // Redirect to login if no token
+  }
+
   // GET ALL BOOKS
   // Optionally, show a loading indicator
   $("#loading").show();
@@ -111,7 +124,7 @@ $(document).ready(function () {
             // Remove the book row from the table
             $("tr#book-" + bookId).remove();
             loadPage();
-        } else {
+          } else {
             alert(res.message);
           }
         },
@@ -120,5 +133,78 @@ $(document).ready(function () {
         },
       });
     }
+  });
+
+  $("#logoutButton").click(function () {
+    $.ajax({
+      type: "POST",
+      url: "logout.php",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      success: function (response) {
+        const data = JSON.parse(response);
+        if (data.success) {
+          localStorage.removeItem("token"); // Remove the token from localStorage
+          window.location.href = "login.html"; // Redirect to the login page
+        } else {
+          alert(data.message);
+          console.log(data.message);
+        }
+      },
+      error: function () {
+        alert("Logout request failed.");
+      },
+    });
+  });
+
+  $("body").on("click", ".editBtn", function () {
+    var bookId = $(this).data("id");
+    var row = $(this).closest("tr");
+    var title = row.find("td:eq(0)").text();
+    var author = row.find("td:eq(1)").text();
+    var genre = row.find("td:eq(2)").text();
+
+    // Populate the edit form
+    $("#editId").val(bookId);
+    $("#editTitle").val(title);
+    $("#editAuthor").val(author);
+    $("#editGenre").val(genre);
+
+    // Show the form
+    $("#editBookForm").show();
+  });
+
+  // Handle the update form submission
+  $("#updateBookForm").submit(function (e) {
+    e.preventDefault();
+    var bookId = $("#editId").val();
+    var updatedData = {
+      id: bookId,
+      title: $("#editTitle").val(),
+      author: $("#editAuthor").val(),
+      genre: $("#editGenre").val(),
+    };
+
+    // AJAX request to update the book
+    $.ajax({
+      url: "updateBook.php", // Server-side script to handle the update
+      type: "POST",
+      data: JSON.stringify(updatedData),
+      contentType: "application/json",
+      success: function (response) {
+        if (response.success) {
+          // Refresh the list or directly update the table row
+          alert("Book updated successfully!");
+          location.reload(); // Or update the row data without reloading
+        } else {
+          console.error("Error updating book: ", response.success, response);
+          alert("Error: " + response.message);
+        }
+      },
+      error: function () {
+        alert("Failed to update the book.");
+      },
+    });
   });
 });

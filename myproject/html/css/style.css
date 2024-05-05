@@ -1,28 +1,107 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+header, section {
+    background: white;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    color: #5C3D6B; /* A deep purple for headings */
 }
 
 #book-form, #books {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
+    margin-top: 20px;
 }
 
 table {
     width: 100%;
-    margin-top: 10px;
-}
-
-table, th, td {
-    border: 1px solid black;
+    margin-top: 20px;
+    background: #fff;
     border-collapse: collapse;
 }
 
 th, td {
     padding: 10px;
-    text-align: left;
+    border: 1px solid #ddd;
 }
 
-input[type="text"], input[type="submit"] {
-    margin: 10px 0;
+input[type="email"], input[type="password"], input[type="text"], button[type="submit"], button[type="button"] {
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 4px;
+    width: calc(100% - 22px);
+}
+
+button[type="submit"] {
+    background-color: #5C3D6B; /* Deep purple background */
+    color: white;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #423457;
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* A gray shade */
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    display: inline-block;
+    margin: 5px;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Slightly darker gray on hover */
+}
+
+.btn-success, .btn-primary, .btn-danger {
+    padding: 5px 10px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #3498db;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-danger {
+    background-color: #d9534f; /* Bootstrap red */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
 }
